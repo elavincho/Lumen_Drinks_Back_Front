@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout :: head('LUMEN | Gestión de Usuarios')}">
+</head>
+
+<body>
+    <!-- Ambient Glass Lighting & Sparkle Effects -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="bubbles-container" id="bubblesContainer"></div>
+
+    <!-- Header Section -->
+    <header th:replace="~{fragments/layout :: header}"></header>
+
+    <!-- Admin Section -->
+    <main class="admin-section">
+        <div class="admin-container">
+            <!-- Left Navigation Sidebar Fragment -->
+            <div th:replace="~{fragments/layout :: adminSidebar('usuarios')}"></div>
+
+            <!-- Right Content Panel -->
+            <div class="admin-content">
+                <div class="admin-header-title">
+                    <h2 class="section-title" style="margin: 0;"><i class="fa-solid fa-users text-gradient"></i> Gestión de Usuarios</h2>
+                    <span style="color: var(--text-muted);" th:text="${#lists.size(usuarios) + ' usuarios registrados'}">0 usuarios</span>
+                </div>
+
+                <!-- Alert Messages -->
+                <div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}">
+                    Operación exitosa.
+                </div>
+
+                <div class="admin-table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Email</th>
+                                <th>Rol de Acceso</th>
+                                <th>Estado</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="usr : ${usuarios}">
+                                <td>
+                                    <strong th:text="${usr.nombre}">User Name</strong>
+                                </td>
+                                <td th:text="${usr.email}">user@email.com</td>
+                                <td>
+                                    <!-- Role badge styling -->
+                                    <span class="badge-status" 
+                                          th:classappend="${usr.rol.name() == 'ROLE_ADMIN' ? 'badge-ready' : 'badge-received'}"
+                                          th:text="${usr.rol.name() == 'ROLE_ADMIN' ? 'ADMINISTRADOR' : 'CLIENTE'}">
+                                        CLIENTE
+                                    </span>
+                                </td>
+                                <td>
+                                    <span th:if="${usr.activo}" style="color: #2ecc71; font-weight: bold;">
+                                        <i class="fa-solid fa-circle-check"></i> Activo
+                                    </span>
+                                    <span th:if="${!usr.activo}" style="color: var(--ruby-pink); font-weight: bold;">
+                                        <i class="fa-solid fa-circle-xmark"></i> Bloqueado
+                                    </span>
+                                </td>
+                                <td>
+                                    <!-- Toggle Active Action -->
+                                    <!-- Disable button for the logged in admin user to prevent locking themselves out -->
+                                    <div th:if="${usr.email != usuarioAutenticado.email}">
+                                        <a th:href="@{/admin/usuarios/estado/{id}(id=${usr.id})}" 
+                                           class="btn btn-sm" 
+                                           th:classappend="${usr.activo ? 'btn-outline' : 'btn-primary'}"
+                                           style="font-size: 0.8rem; padding: 0.4rem 0.8rem;"
+                                           th:text="${usr.activo ? 'Bloquear' : 'Desbloquear'}">
+                                            Bloquear
+                                        </a>
+                                    </div>
+                                    <div th:if="${usr.email == usuarioAutenticado.email}">
+                                        <span style="color: var(--text-muted); font-size: 0.8rem; font-style: italic;">Sesión Actual</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
+
+    <script src="/js/script.js"></script>
+</body>
+
+</html>

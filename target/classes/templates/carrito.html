@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout :: head('LUMEN | Carrito de Compras')}">
+</head>
+
+<body>
+    <!-- Ambient Glass Lighting & Sparkle Effects -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="bubbles-container" id="bubblesContainer"></div>
+
+    <!-- Header Section -->
+    <header th:replace="~{fragments/layout :: header}"></header>
+
+    <!-- Shopping Cart Section -->
+    <main class="cart-section">
+        <div class="cart-container">
+            <!-- Left Side: Cart Items -->
+            <div class="cart-card-glass" style="grid-column: 1 / 2;">
+                <div class="cart-header">
+                    <h2 class="cart-title"><i class="fa-solid fa-basket-shopping text-gradient"></i> Tu Carrito</h2>
+                    <span th:text="${#lists.size(items) + ' tragos seleccionados'}" style="color: var(--text-muted);">0 tragos</span>
+                </div>
+
+                <!-- Empty Cart State -->
+                <div th:if="${#lists.isEmpty(items)}" style="text-align: center; padding: 4rem 2rem;">
+                    <i class="fa-solid fa-glass-water-slash" style="font-size: 4rem; color: var(--text-muted); margin-bottom: 1.5rem; display: block;"></i>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Tu carrito está vacío</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem; max-width: 400px; margin-left: auto; margin-right: auto;">
+                        Aún no has añadido ningún trago de autor. Visita nuestra carta y selecciona lo mejor de nuestra coctelería botánica.
+                    </p>
+                    <a href="/#menu" class="btn btn-primary btn-lg">
+                        <i class="fa-solid fa-martini-glass"></i> Explorar Carta
+                    </a>
+                </div>
+
+                <!-- Active Cart Items Table -->
+                <div th:if="${!#lists.isEmpty(items)}" class="admin-table-container">
+                    <table class="cart-table">
+                        <thead>
+                            <tr>
+                                <th>Trago</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                                <th>Subtotal</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="cart-item-row" th:each="item : ${items}">
+                                <td class="cart-item-cell">
+                                    <div class="cart-item-info">
+                                        <img th:src="${item.trago.imagenUrl}" th:alt="${item.trago.nombre}" class="cart-item-img" onerror="this.src='/images/ruby_spritz.png'">
+                                        <div>
+                                            <div class="cart-item-name" th:text="${item.trago.nombre}">Trago Name</div>
+                                            <div class="cart-item-category" th:text="${item.trago.categoria}">Categoria</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="cart-item-cell">
+                                    <div class="quantity-controls">
+                                        <!-- Decrement Button -->
+                                        <a th:href="@{/carrito/restar/{id}(id=${item.trago.id})}" class="qty-btn" style="text-decoration: none;">-</a>
+                                        <span class="qty-val" th:text="${item.cantidad}">1</span>
+                                        <!-- Increment Button -->
+                                        <a th:href="@{/carrito/sumar/{id}(id=${item.trago.id})}" class="qty-btn" style="text-decoration: none;">+</a>
+                                    </div>
+                                </td>
+                                <td class="cart-item-cell">
+                                    <span class="cart-price" th:text="${'$' + #numbers.formatDecimal(item.trago.precio, 1, 2)}">$12.00</span>
+                                </td>
+                                <td class="cart-item-cell">
+                                    <span class="cart-price" style="color: var(--citrus-gold);" th:text="${'$' + #numbers.formatDecimal(item.getSubtotal(), 1, 2)}">$12.00</span>
+                                </td>
+                                <td class="cart-item-cell" style="text-align: right;">
+                                    <!-- Delete Item Button -->
+                                    <a th:href="@{/carrito/eliminar/{id}(id=${item.trago.id})}" class="remove-item-btn" aria-label="Eliminar trago">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Right Side: Order Summary -->
+            <div th:if="${!#lists.isEmpty(items)}" class="cart-card-glass" style="height: fit-content;">
+                <h3 style="font-size: 1.4rem; font-family: var(--font-heading); font-weight: 700; margin-bottom: 1.5rem; border-bottom: var(--glass-border); padding-bottom: 1rem;">
+                    Resumen del Pedido
+                </h3>
+                
+                <div class="summary-row">
+                    <span style="color: var(--text-secondary);">Tragos totales:</span>
+                    <strong th:text="${cantCarrito}">0</strong>
+                </div>
+                <div class="summary-row">
+                    <span style="color: var(--text-secondary);">Ubicación:</span>
+                    <span>Barra Principal / Mesa</span>
+                </div>
+                <div class="summary-row">
+                    <span style="color: var(--text-secondary);">Servicio de Barra:</span>
+                    <span style="color: var(--rosemary-green-light); font-weight: 600;">Sin Cargo</span>
+                </div>
+
+                <div class="summary-row summary-total">
+                    <span>Total:</span>
+                    <span th:text="${'$' + #numbers.formatDecimal(total, 1, 2)}">$0.00</span>
+                </div>
+
+                <form th:action="@{/pedido/checkout}" method="POST" style="margin-top: 2rem;">
+                    <button type="submit" class="btn btn-primary btn-block btn-lg btn-sparkle">
+                        <i class="fa-solid fa-fire-burner"></i> Confirmar Pedido
+                    </button>
+                </form>
+
+                <p style="font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-top: 1rem;">
+                    Tu trago se preparará en la barra principal al confirmar.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
+
+    <script src="/js/script.js"></script>
+</body>
+
+</html>

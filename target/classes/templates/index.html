@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout :: head('LUMEN | Artisanal Mixology & Craft Cocktails')}">
+</head>
+
+<body>
+    <!-- Ambient Glass Lighting & Sparkle Effects -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="bubbles-container" id="bubblesContainer"></div>
+
+    <!-- Header Section -->
+    <header th:replace="~{fragments/layout :: header}"></header>
+
+    <!-- Main Section -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section" id="hero">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <div class="badge-pill">
+                        <span class="badge-dot"></span> Experiencia Botánica & Cristalina
+                    </div>
+                    <h1 class="hero-title">
+                        El Arte de los <br>
+                        <span class="text-gradient">Tragos de Autor</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Fusionamos la frescura del pomelo rubí con romero silvestre ahumado, destilados premium e hielo
+                        cristalino artesanal. Sabor inolvidable en cada sorbo.
+                    </p>
+                    <div class="hero-cta-group">
+                        <a href="#menu" class="btn btn-primary btn-lg">
+                            <i class="fa-solid fa-whiskey-glass"></i> Explorar Carta (<span th:text="${#lists.size(tragos)}">10</span> Tragos)
+                        </a>
+                        <button class="btn btn-outline btn-lg" id="quickFeatureBtn">
+                            <i class="fa-solid fa-star"></i> Trago Insignia
+                        </button>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <span class="stat-num">100%</span>
+                            <span class="stat-desc">Botánicos Frescos</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <span class="stat-num" th:text="${#lists.size(tragos) + '+'}">10+</span>
+                            <span class="stat-desc">Creaciones Únicas</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <span class="stat-num">4.9 ★</span>
+                            <span class="stat-desc">Calificación Mixológica</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="hero-card-glass" th:if="${tragoInsignia != null}">
+                        <div class="visual-tag"><i class="fa-solid fa-fire"></i> Recomendación de la Casa</div>
+                        <div class="cocktail-hero-img-wrapper">
+                            <img th:src="${tragoInsignia.imagenUrl}" th:alt="${tragoInsignia.nombre}" class="hero-cocktail-img"
+                                id="heroCocktailImg" onerror="this.src='/images/ruby_spritz.png'">
+                            <div class="hero-glow-ring"></div>
+                        </div>
+                        <div class="hero-card-details">
+                            <h3 th:text="${tragoInsignia.nombre}">Ruby Rosemary Spritz</h3>
+                            <p class="ingredients-preview" th:text="${tragoInsignia.descripcionCorta}">Gin Boutique • Pomelo Rubí...</p>
+                            <div class="hero-card-bottom">
+                                <span class="price-tag" th:text="${'$' + #numbers.formatDecimal(tragoInsignia.precio, 1, 2)}">$12.50</span>
+                                <button class="btn btn-sm btn-primary order-trigger-btn" th:attr="data-id=${tragoInsignia.id}">
+                                    <i class="fa-solid fa-cart-plus"></i> Pedir Este Trago
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Menu & Filters Section -->
+        <section class="menu-section" id="menu">
+            <div class="section-container">
+                <div class="section-header">
+                    <div class="section-badge"><i class="fa-solid fa-cocktail"></i> Nuestra Selección Exclusiva</div>
+                    <h2 class="section-title">Carta de Tragos de Autor</h2>
+                    <p class="section-description">
+                        Selecciona tu trago preferido. Cada uno cuenta con ingredientes frescos minuciosamente
+                        seleccionados, foto, nota de sabor y precio.
+                    </p>
+                </div>
+
+                <!-- Category Filters -->
+                <div class="filter-container">
+                    <button class="filter-btn active" data-category="all">
+                        <i class="fa-solid fa-border-all"></i> Todos los Tragos (<span th:text="${#lists.size(tragos)}">10</span>)
+                    </button>
+                    <button class="filter-btn" data-category="insignia">
+                        <i class="fa-solid fa-gem"></i> Insignia LUMEN
+                    </button>
+                    <button class="filter-btn" data-category="citricos">
+                        <i class="fa-solid fa-lemon"></i> Cítricos & Frutales
+                    </button>
+                    <button class="filter-btn" data-category="ahumados">
+                        <i class="fa-solid fa-smog"></i> Ahumados & Especiados
+                    </button>
+                    <button class="filter-btn" data-category="sin-alcohol">
+                        <i class="fa-solid fa-seedling"></i> Sin Alcohol (Mocktails)
+                    </button>
+                </div>
+
+                <!-- Cocktail Cards Grid -->
+                <div class="cocktails-grid" id="cocktailsGrid">
+                    <!-- Dynamic rendering via Thymeleaf loop -->
+                    <article class="cocktail-card" th:each="drink : ${tragos}" th:attr="data-id=${drink.id}, data-category=${drink.categoria}">
+                        <div class="cocktail-img-container">
+                            <img th:src="${drink.imagenUrl}" th:alt="${drink.nombre}" class="cocktail-img" loading="lazy" onerror="this.src='/images/ruby_spritz.png'">
+                            <span class="cocktail-badge" th:if="${drink.badge != null and !drink.badge.isEmpty()}">
+                                <i class="fa-solid fa-sparkles"></i> <span th:text="${drink.badge}">Badge</span>
+                            </span>
+                        </div>
+                        <div class="cocktail-info">
+                            <div class="cocktail-header">
+                                <h3 class="cocktail-title" th:text="${drink.nombre}">Ruby Rosemary Spritz</h3>
+                                <span class="cocktail-price" th:text="${'$' + #numbers.formatDecimal(drink.precio, 1, 2)}">$12.50</span>
+                            </div>
+                            <p class="cocktail-desc" th:text="${drink.descripcionCorta}">Gin boutique, jugo fresco de pomelo rubí...</p>
+                            
+                            <span class="ingredients-title"><i class="fa-solid fa-leaf"></i> Ingredientes</span>
+                            <div class="ingredients-list">
+                                <span class="ingredient-pill" th:each="ing : ${drink.getIngredientesList()}" th:text="${ing}">Gin</span>
+                            </div>
+                            
+                            <!-- Hidden inputs for interactive modal content lookup -->
+                            <input type="hidden" class="drink-full-desc" th:value="${drink.descripcionLarga}" />
+                            <input type="hidden" class="drink-citric" th:value="${drink.citrico}" />
+                            <input type="hidden" class="drink-herbal" th:value="${drink.herbal}" />
+                            <input type="hidden" class="drink-sweet" th:value="${drink.dulzura}" />
+                            <input type="hidden" class="drink-alcohol" th:value="${drink.alcohol}" />
+                            <input type="hidden" class="drink-ingredients-str" th:value="${drink.ingredientes}" />
+
+                            <div class="card-actions">
+                                <button class="btn-detail view-detail-btn" th:attr="data-id=${drink.id}">
+                                    <i class="fa-solid fa-circle-info"></i> Detalle
+                                </button>
+                                <button class="btn btn-primary btn-sm btn-order-card order-trigger-btn" th:attr="data-id=${drink.id}">
+                                    <i class="fa-solid fa-cart-plus"></i> Pedir
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <p style="grid-column: 1/-1; text-align: center; color: var(--text-secondary); padding: 3rem;" 
+                       th:if="${#lists.isEmpty(tragos)}">
+                       No se encontraron tragos disponibles en la barra.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Crafting & Botanical Experience Section -->
+        <section class="experience-section" id="experiencia">
+            <div class="section-container">
+                <div class="exp-grid">
+                    <div class="exp-image-box">
+                        <img src="/images/smoked_bourbon.png" alt="Preparación artesanal de tragos ahumados"
+                            class="exp-img">
+                        <div class="exp-badge">
+                            <i class="fa-solid fa-temperature-arrow-up"></i> Tostado & Infusión Botánica
+                        </div>
+                    </div>
+                    <div class="exp-content">
+                        <div class="section-badge"><i class="fa-solid fa-wand-magic-sparkles"></i> El Secreto de la
+                            Barra</div>
+                        <h2 class="section-title">Ingredientes Frescos y Hielo Cristalino Purificado</h2>
+                        <p class="exp-text">
+                            Inspirados en la alquimia del pomelo rubí recién cortado y el romero fresco destilado,
+                            elaboramos nuestros propios jarabes, tónicas de autor e infusiones herbales en pequeñas
+                            tandas.
+                        </p>
+
+                        <div class="exp-features">
+                            <div class="feature-card">
+                                <div class="feature-icon"><i class="fa-solid fa-cube"></i></div>
+                                <div>
+                                    <h4>Hielo Cristal de Lenta Fusión</h4>
+                                    <p>Cubos de ultra purificación que no diluyen tu cóctel, manteniendo el equilibrio
+                                        del sabor perfecto.</p>
+                                </div>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon"><i class="fa-solid fa-leaf"></i></div>
+                                <div>
+                                    <h4>Romero & Cítricos Orgánicos</h4>
+                                    <p>Hierbas aromáticas cultivadas localmente y tratadas al momento para liberar sus
+                                        aceites esenciales.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bar Experience & Testimonials Section -->
+        <section class="about-section" id="nosotros">
+            <div class="section-container">
+                <div class="about-card-glass">
+                    <div class="about-header">
+                        <i class="fa-solid fa-quote-left quote-icon"></i>
+                        <h3>"La mejor experiencia en coctelería de autor de la ciudad. El Ruby Rosemary Spritz es
+                            sencillamente sublime."</h3>
+                        <p class="author-tag">— Revista Mixology & Flavors 2026</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
+
+    <!-- Cocktail Detail Modal -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal-card">
+            <button class="modal-close" id="modalCloseBtn" aria-label="Cerrar modal">&times;</button>
+            <div class="modal-body" id="modalBody">
+                <!-- Injected dynamically via script.js -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Toast Notifications Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Script Files -->
+    <script src="/js/script.js"></script>
+</body>
+
+</html>

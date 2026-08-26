@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout :: head('LUMEN | Iniciar Sesión')}">
+</head>
+
+<body>
+    <!-- Ambient Glass Lighting & Sparkle Effects -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="bubbles-container" id="bubblesContainer"></div>
+
+    <!-- Header Section -->
+    <header th:replace="~{fragments/layout :: header}"></header>
+
+    <!-- Main Auth Section -->
+    <main class="auth-section">
+        <div class="auth-card">
+            <div class="auth-header">
+                <a href="/" class="brand-logo" style="justify-content: center; margin-bottom: 1.5rem;">
+                    <span class="logo-icon"><i class="fa-solid fa-glass-citrus"></i></span>
+                    <div class="logo-text">
+                        <span class="brand-name">LUMEN</span>
+                    </div>
+                </a>
+                <h2 class="auth-title text-gradient">Iniciar Sesión</h2>
+                <p class="auth-subtitle">Ingresa a tu cuenta para ordenar tragos de autor</p>
+            </div>
+
+            <!-- Error Alerts -->
+            <div th:if="${param.error}" class="alert alert-danger">
+                <i class="fa-solid fa-triangle-exclamation"></i> Email o contraseña incorrectos.
+            </div>
+            <div th:if="${param.logout}" class="alert alert-success">
+                <i class="fa-solid fa-circle-check"></i> Has cerrado sesión con éxito.
+            </div>
+            <div th:if="${param.denegado}" class="alert alert-danger">
+                <i class="fa-solid fa-ban"></i> Acceso denegado. Se requiere ser Administrador.
+            </div>
+            <div th:if="${registroExitoso}" class="alert alert-success">
+                <i class="fa-solid fa-circle-check"></i> Registro completado. Ya puedes iniciar sesión.
+            </div>
+
+            <!-- Login Form -->
+            <form th:action="@{/login}" method="POST">
+                <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="ejemplo@email.com" required autofocus />
+                </div>
+                
+                <div class="form-group">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" id="password" name="password" class="form-input" placeholder="••••••••" required />
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 1rem;">
+                    <i class="fa-solid fa-right-to-bracket"></i> Ingresar
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                ¿No tienes cuenta? <a href="/registro">Regístrate ahora</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
+
+    <script src="/js/script.js"></script>
+</body>
+
+</html>

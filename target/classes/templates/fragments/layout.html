@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">LUMEN | Artisanal Mixology</title>
+    <!-- Meta Description for SEO -->
+    <meta name="description" content="Descubre la experiencia de coctelería de autor LUMEN. Tragos de autor inspirados en la frescura del pomelo rubí, notas ahumadas y botánicos de romero.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/custom.css">
+    <link rel="icon" type="image/x-icon" href="/images/berry_fizz.png">
+</head>
+<body>
+
+    <!-- Header Fragment -->
+    <header th:fragment="header" class="main-header" id="header">
+        <div class="header-container">
+            <a href="/" class="brand-logo">
+                <span class="logo-icon"><i class="fa-solid fa-glass-citrus"></i></span>
+                <div class="logo-text">
+                    <span class="brand-name">LUMEN</span>
+                    <span class="brand-tag">ARTISANAL MIXOLOGY</span>
+                </div>
+            </a>
+
+            <nav class="nav-menu" id="navMenu">
+                <ul>
+                    <li><a href="/#hero" class="nav-link"><i class="fa-solid fa-house"></i> Inicio</a></li>
+                    <li><a href="/#menu" class="nav-link"><i class="fa-solid fa-martini-glass-citrus"></i> Cocteles</a></li>
+                    <li><a href="/#experiencia" class="nav-link"><i class="fa-solid fa-seedling"></i> Botánicos</a></li>
+                    <li><a href="/#nosotros" class="nav-link"><i class="fa-solid fa-crown"></i> Bar de Autor</a></li>
+                    
+                    <!-- Admin Panel Option (Visible only to ADMIN users) -->
+                    <li sec:authorize="hasRole('ADMIN')">
+                        <a href="/admin/dashboard" class="nav-link" style="color: var(--citrus-gold); font-weight: 700;">
+                            <i class="fa-solid fa-gauge"></i> Admin Panel
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="header-actions">
+                <!-- Cart Button -->
+                <button class="cart-btn" id="cartBtn" aria-label="Ver carrito">
+                    <i class="fa-solid fa-basket-shopping"></i>
+                    <!-- Thymeleaf: print cart count if authenticated, else 0 -->
+                    <span class="cart-badge" id="cartBadge" 
+                          th:text="${usuarioAutenticado != null ? cantCarrito : '0'}">0</span>
+                </button>
+
+                <!-- Authentication Actions -->
+                <!-- User Logged In: show Name and Logout Button -->
+                <div sec:authorize="isAuthenticated()" class="auth-user-menu" style="display: flex; align-items: center; gap: 15px;">
+                    <span class="nav-link-username" style="font-size: 0.9rem; color: var(--text-secondary);">
+                        <i class="fa-solid fa-user-astronaut"></i> <span th:text="${usuarioAutenticado.nombre}">Usuario</span>
+                    </span>
+                    <a href="/logout" class="btn btn-outline btn-sm" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                        <i class="fa-solid fa-right-from-bracket"></i> Salir
+                    </a>
+                </div>
+
+                <!-- User Anonymous: show Login Button -->
+                <div sec:authorize="isAnonymous()">
+                    <a href="/login" class="btn btn-primary btn-sm">
+                        <i class="fa-solid fa-key"></i> Entrar
+                    </a>
+                </div>
+
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Menu movil">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Footer Fragment -->
+    <footer th:fragment="footer" class="main-footer">
+        <div class="footer-container">
+            <div class="footer-col brand-col">
+                <div class="brand-logo">
+                    <span class="logo-icon"><i class="fa-solid fa-glass-citrus"></i></span>
+                    <div class="logo-text">
+                        <span class="brand-name">LUMEN</span>
+                        <span class="brand-tag">ARTISANAL MIXOLOGY</span>
+                    </div>
+                </div>
+                <p class="footer-desc">
+                    Experiencias sensoriales a través de la coctelería artesanal. Ingredientes seleccionados, técnica refinada y pasión en cada copa.
+                </p>
+                <div class="social-links">
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="#" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Navegación</h4>
+                <ul>
+                    <li><a href="/#hero">Inicio</a></li>
+                    <li><a href="/#menu">Nuestros Tragos</a></li>
+                    <li><a href="/#experiencia">Secretos Botánicos</a></li>
+                    <li><a href="/#nosotros">Reseñas y Barra</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Horarios de Atención</h4>
+                <ul class="hours-list">
+                    <li><span>Miércoles a Viernes:</span> 19:00 - 02:00 hs</li>
+                    <li><span>Sábados y Domingos:</span> 18:00 - 04:00 hs</li>
+                    <li><span>Lunes y Martes:</span> Cerrado por macerados</li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Contacto y Pedidos</h4>
+                <p><i class="fa-solid fa-location-dot"></i> Av. Botánica 1420, Barrio Italia</p>
+                <p><i class="fa-solid fa-phone"></i> +54 11 5555-8899</p>
+                <p><i class="fa-solid fa-envelope"></i> barra@lumencocktails.com</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-bottom-container">
+                <p>&copy; 2026 LUMEN Artisanal Mixology. Todos los derechos reservados.</p>
+                <p class="credits">Powered by elavinchodev</p>
+            </div>
+        </div>
+    <!-- Admin Sidebar Fragment -->
+    <aside th:fragment="adminSidebar(activePage)" class="admin-sidebar">
+        <ul class="admin-menu">
+            <li class="admin-menu-item">
+                <a href="/admin/dashboard" class="admin-menu-link" th:classappend="${activePage == 'dashboard' ? 'active' : ''}">
+                    <i class="fa-solid fa-chart-line"></i> Dashboard
+                </a>
+            </li>
+            <li class="admin-menu-item">
+                <a href="/admin/tragos" class="admin-menu-link" th:classappend="${activePage == 'tragos' ? 'active' : ''}">
+                    <i class="fa-solid fa-martini-glass-citrus"></i> Tragos (CRUD)
+                </a>
+            </li>
+            <li class="admin-menu-item">
+                <a href="/admin/pedidos" class="admin-menu-link" th:classappend="${activePage == 'pedidos' ? 'active' : ''}">
+                    <i class="fa-solid fa-receipt"></i> Pedidos
+                </a>
+            </li>
+            <li class="admin-menu-item">
+                <a href="/admin/usuarios" class="admin-menu-link" th:classappend="${activePage == 'usuarios' ? 'active' : ''}">
+                    <i class="fa-solid fa-users"></i> Usuarios
+                </a>
+            </li>
+            <li class="admin-menu-item" style="margin-top: 2rem; border-top: var(--glass-border); padding-top: 1rem;">
+                <a href="/" class="admin-menu-link" style="color: var(--rosemary-green-light);">
+                    <i class="fa-solid fa-shop"></i> Ir a la Tienda
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+</body>
+</html>

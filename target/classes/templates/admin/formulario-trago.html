@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout :: head('LUMEN | Formulario de Trago')}">
+</head>
+
+<body>
+    <!-- Ambient Glass Lighting & Sparkle Effects -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="bubbles-container" id="bubblesContainer"></div>
+
+    <!-- Header Section -->
+    <header th:replace="~{fragments/layout :: header}"></header>
+
+    <!-- Admin Section -->
+    <main class="admin-section">
+        <div class="admin-container">
+            <!-- Left Navigation Sidebar Fragment -->
+            <div th:replace="~{fragments/layout :: adminSidebar('tragos')}"></div>
+
+            <!-- Right Content Panel -->
+            <div class="admin-content">
+                <div class="admin-header-title">
+                    <h2 class="section-title" style="margin: 0;">
+                        <i class="fa-solid fa-martini-glass-citrus text-gradient"></i>
+                        <span th:text="${trago.id == null ? 'Nuevo Trago de Autor' : 'Editar Trago'}">Formulario</span>
+                    </h2>
+                    <a href="/admin/tragos" class="btn btn-outline btn-sm">
+                        <i class="fa-solid fa-chevron-left"></i> Volver al listado
+                    </a>
+                </div>
+
+                <!-- CRUD Edit Form -->
+                <form th:action="@{/admin/tragos/guardar}" th:object="${trago}" method="POST" enctype="multipart/form-data">
+                    <!-- Hidden ID input for updates -->
+                    <input type="hidden" th:field="*{id}" />
+                    <!-- Hidden input to preserve old image if no new one is uploaded -->
+                    <input type="hidden" th:field="*{imagenUrl}" />
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <!-- Left Column -->
+                        <div>
+                            <div class="form-group">
+                                <label for="nombre" class="form-label">Nombre del Trago</label>
+                                <input type="text" id="nombre" th:field="*{nombre}" class="form-input" placeholder="ej. Ruby Spritz" required />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="categoria" class="form-label">Categoría</label>
+                                <select id="categoria" th:field="*{categoria}" class="form-input" required style="background: rgba(0, 0, 0, 0.4); color: white;">
+                                    <option value="insignia">Insignia LUMEN</option>
+                                    <option value="citricos">Cítrico & Frutal</option>
+                                    <option value="ahumados">Ahumado & Especiado</option>
+                                    <option value="sin-alcohol">Sin Alcohol (Mocktail)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="precio" class="form-label">Precio (USD)</label>
+                                <input type="number" id="precio" th:field="*{precio}" class="form-input" step="0.01" min="0.00" placeholder="12.50" required />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="badge" class="form-label">Badge / Distintivo (Opcional)</label>
+                                <input type="text" id="badge" th:field="*{badge}" class="form-input" placeholder="ej. Recomendación, Ahumado" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="ingredientes" class="form-label">Ingredientes (Separados por Comas)</label>
+                                <input type="text" id="ingredientes" th:field="*{ingredientes}" class="form-input" placeholder="ej. Gin, Pomelo Rubí, Romero, Tónica" required />
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div>
+                            <div class="form-group">
+                                <label for="descripcionCorta" class="form-label">Descripción Corta</label>
+                                <input type="text" id="descripcionCorta" th:field="*{descripcionCorta}" class="form-input" placeholder="Resumen del trago para la carta..." required />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="descripcionLarga" class="form-label">Descripción Larga / Alquimia</label>
+                                <textarea id="descripcionLarga" th:field="*{descripcionLarga}" class="form-input" rows="4" placeholder="Alquimia completa y notas sensoriales..." required style="resize: none;"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="archivoImagen" class="form-label">Imagen del Trago (Archivo)</label>
+                                <input type="file" id="archivoImagen" name="archivoImagen" class="form-input" accept="image/*" th:required="${trago.id == null}" style="padding-top: 0.6rem; padding-bottom: 0.6rem;" />
+                                <small th:if="${trago.imagenUrl != null}" style="color: var(--text-muted); display: block; margin-top: 5px;">
+                                    Imagen actual: <span th:text="${trago.imagenUrl}">url</span>
+                                </small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="alcohol" class="form-label">Graduación Alcohólica</label>
+                                <input type="text" id="alcohol" th:field="*{alcohol}" class="form-input" placeholder="ej. 14%, 0.0%, 18%" required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flavor Profile Sliders -->
+                    <div style="background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: var(--radius-md); border: var(--glass-border); margin: 2rem 0;">
+                        <h4 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: var(--rosemary-green-light); margin-bottom: 1.5rem;">
+                            Perfil de Sabor (Porcentajes)
+                        </h4>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                            <!-- Citrico -->
+                            <div class="form-group" style="margin: 0;">
+                                <label class="form-label">Cítrico</label>
+                                <div class="range-container">
+                                    <input type="range" th:field="*{citrico}" class="range-slider" min="0" max="100" step="5" oninput="actualizarVal('citricoVal', this.value)" />
+                                    <span id="citricoVal" class="range-val" th:text="${trago.citrico != null ? trago.citrico : '50'}">50</span><span style="color: var(--citrus-gold); font-weight: bold;">%</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Herbal -->
+                            <div class="form-group" style="margin: 0;">
+                                <label class="form-label">Herbal</label>
+                                <div class="range-container">
+                                    <input type="range" th:field="*{herbal}" class="range-slider" min="0" max="100" step="5" oninput="actualizarVal('herbalVal', this.value)" />
+                                    <span id="herbalVal" class="range-val" th:text="${trago.herbal != null ? trago.herbal : '50'}">50</span><span style="color: var(--citrus-gold); font-weight: bold;">%</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Dulzura -->
+                            <div class="form-group" style="margin: 0;">
+                                <label class="form-label">Dulzura</label>
+                                <div class="range-container">
+                                    <input type="range" th:field="*{dulzura}" class="range-slider" min="0" max="100" step="5" oninput="actualizarVal('dulzuraVal', this.value)" />
+                                    <span id="dulzuraVal" class="range-val" th:text="${trago.dulzura != null ? trago.dulzura : '50'}">50</span><span style="color: var(--citrus-gold); font-weight: bold;">%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block btn-lg btn-sparkle" style="margin-top: 1.5rem;">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Guardar Trago
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
+
+    <script src="/js/script.js"></script>
+    
+    <!-- Script to update range slider values dynamically -->
+    <script>
+        function actualizarVal(elementId, val) {
+            document.getElementById(elementId).innerText = val;
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout :: head('LUMEN | Registro')}">
+</head>
+
+<body>
+    <!-- Ambient Glass Lighting & Sparkle Effects -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="bubbles-container" id="bubblesContainer"></div>
+
+    <!-- Header Section -->
+    <header th:replace="~{fragments/layout :: header}"></header>
+
+    <!-- Main Auth Section -->
+    <main class="auth-section">
+        <div class="auth-card">
+            <div class="auth-header">
+                <a href="/" class="brand-logo" style="justify-content: center; margin-bottom: 1.5rem;">
+                    <span class="logo-icon"><i class="fa-solid fa-glass-citrus"></i></span>
+                    <div class="logo-text">
+                        <span class="brand-name">LUMEN</span>
+                    </div>
+                </a>
+                <h2 class="auth-title text-gradient">Crear Cuenta</h2>
+                <p class="auth-subtitle">Regístrate para comenzar tu experiencia mixológica</p>
+            </div>
+
+            <!-- Error Alerts -->
+            <div th:if="${error}" class="alert alert-danger" th:text="${error}">
+                <i class="fa-solid fa-triangle-exclamation"></i> Error al registrar.
+            </div>
+
+            <!-- Registration Form -->
+            <form th:action="@{/registro}" th:object="${usuario}" method="POST">
+                <div class="form-group">
+                    <label for="nombre" class="form-label">Nombre Completo</label>
+                    <input type="text" id="nombre" th:field="*{nombre}" class="form-input" placeholder="Tu nombre" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" th:field="*{email}" class="form-input" placeholder="ejemplo@email.com" required />
+                </div>
+                
+                <div class="form-group">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" id="password" th:field="*{password}" class="form-input" placeholder="Mínimo 6 caracteres" required minlength="6" />
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 1rem;">
+                    <i class="fa-solid fa-user-plus"></i> Registrarse
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                ¿Ya tienes una cuenta? <a href="/login">Inicia sesión</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
+
+    <script src="/js/script.js"></script>
+</body>
+
+</html>

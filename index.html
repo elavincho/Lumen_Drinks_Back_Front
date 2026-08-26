@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUMEN | Artisanal Mixology & Craft Cocktails</title>
+    <!-- Meta Description for SEO -->
+    <meta name="description"
+        content="Descubre la experiencia de coctelería de autor LUMEN. Tragos de autor inspirados en la frescura del pomelo rubí, notas ahumadas y botánicos de romero.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="images/berry_fizz.png">
+</head>
+
+<body>
+    <!-- Ambient Glass Lighting & Sparkle Effects -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="bubbles-container" id="bubblesContainer"></div>
+
+    <!-- Header Section -->
+    <header class="main-header" id="header">
+        <div class="header-container">
+            <a href="#" class="brand-logo">
+                <span class="logo-icon"><i class="fa-solid fa-glass-citrus"></i></span>
+                <div class="logo-text">
+                    <span class="brand-name">LUMEN</span>
+                    <span class="brand-tag">ARTISANAL MIXOLOGY</span>
+                </div>
+            </a>
+
+            <nav class="nav-menu" id="navMenu">
+                <ul>
+                    <li><a href="#hero" class="nav-link active"><i class="fa-solid fa-house"></i> Inicio</a></li>
+                    <li><a href="#menu" class="nav-link"><i class="fa-solid fa-martini-glass-citrus"></i> Cocteles</a>
+                    </li>
+                    <li><a href="#experiencia" class="nav-link"><i class="fa-solid fa-seedling"></i> Botánicos</a></li>
+                    <li><a href="#nosotros" class="nav-link"><i class="fa-solid fa-crown"></i> Bar de Autor</a></li>
+                </ul>
+            </nav>
+
+            <div class="header-actions">
+                <button class="cart-btn" id="cartBtn" aria-label="Ver carrito">
+                    <i class="fa-solid fa-basket-shopping"></i>
+                    <span class="cart-badge" id="cartBadge">0</span>
+                </button>
+                <a href="#menu" class="btn btn-primary btn-sparkle">
+                    <i class="fa-solid fa-fire-burner"></i> Pedir Ahora
+                </a>
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Menu movil">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Section -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section" id="hero">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <div class="badge-pill">
+                        <span class="badge-dot"></span> Experiencia Botánica & Cristalina
+                    </div>
+                    <h1 class="hero-title">
+                        El Arte de los <br>
+                        <span class="text-gradient">Tragos de Autor</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Fusionamos la frescura del pomelo rubí con romero silvestre ahumado, destilados premium e hielo
+                        cristalino artesanal. Sabor inolvidable en cada sorbo.
+                    </p>
+                    <div class="hero-cta-group">
+                        <a href="#menu" class="btn btn-primary btn-lg">
+                            <i class="fa-solid fa-whiskey-glass"></i> Explorar Carta (10 Tragos)
+                        </a>
+                        <button class="btn btn-outline btn-lg" id="quickFeatureBtn">
+                            <i class="fa-solid fa-star"></i> Trago Insignia
+                        </button>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <span class="stat-num">100%</span>
+                            <span class="stat-desc">Botánicos Frescos</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <span class="stat-num">10+</span>
+                            <span class="stat-desc">Creaciones Únicas</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <span class="stat-num">4.9 ★</span>
+                            <span class="stat-desc">Calificación Mixológica</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="hero-card-glass">
+                        <div class="visual-tag"><i class="fa-solid fa-fire"></i> Recomendación de la Casa</div>
+                        <div class="cocktail-hero-img-wrapper">
+                            <img src="images/ruby_spritz.png" alt="Ruby Rosemary Spritz" class="hero-cocktail-img"
+                                id="heroCocktailImg">
+                            <div class="hero-glow-ring"></div>
+                        </div>
+                        <div class="hero-card-details">
+                            <h3>Ruby Rosemary Spritz</h3>
+                            <p class="ingredients-preview">Gin Boutique • Pomelo Rubí • Romero Flameado • Tónica Cristal
+                            </p>
+                            <div class="hero-card-bottom">
+                                <span class="price-tag">$12.50</span>
+                                <button class="btn btn-sm btn-primary order-trigger-btn" data-id="1">
+                                    <i class="fa-solid fa-cart-plus"></i> Pedir Este Trago
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Menu & Filters Section -->
+        <section class="menu-section" id="menu">
+            <div class="section-container">
+                <div class="section-header">
+                    <div class="section-badge"><i class="fa-solid fa-cocktail"></i> Nuestra Selección Exclusiva</div>
+                    <h2 class="section-title">Carta de Tragos de Autor</h2>
+                    <p class="section-description">
+                        Selecciona tu trago preferido. Cada uno cuenta con ingredientes frescos minuciosamente
+                        seleccionados, foto, nota de sabor y precio.
+                    </p>
+                </div>
+
+                <!-- Category Filters -->
+                <div class="filter-container">
+                    <button class="filter-btn active" data-category="all">
+                        <i class="fa-solid fa-border-all"></i> Todos los Tragos (10)
+                    </button>
+                    <button class="filter-btn" data-category="insignia">
+                        <i class="fa-solid fa-gem"></i> Insignia LUMEN
+                    </button>
+                    <button class="filter-btn" data-category="citricos">
+                        <i class="fa-solid fa-lemon"></i> Cítricos & Frutales
+                    </button>
+                    <button class="filter-btn" data-category="ahumados">
+                        <i class="fa-solid fa-smog"></i> Ahumados & Especiados
+                    </button>
+                    <button class="filter-btn" data-category="sin-alcohol">
+                        <i class="fa-solid fa-seedling"></i> Sin Alcohol (Mocktails)
+                    </button>
+                </div>
+
+                <!-- Cocktail Cards Grid -->
+                <div class="cocktails-grid" id="cocktailsGrid">
+                    <!-- Dynamic rendering from script.js -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Crafting & Botanical Experience Section -->
+        <section class="experience-section" id="experiencia">
+            <div class="section-container">
+                <div class="exp-grid">
+                    <div class="exp-image-box">
+                        <img src="images/smoked_bourbon.png" alt="Preparación artesanal de tragos ahumados"
+                            class="exp-img">
+                        <div class="exp-badge">
+                            <i class="fa-solid fa-temperature-arrow-up"></i> Tostado & Infusión Botánica
+                        </div>
+                    </div>
+                    <div class="exp-content">
+                        <div class="section-badge"><i class="fa-solid fa-wand-magic-sparkles"></i> El Secreto de la
+                            Barra</div>
+                        <h2 class="section-title">Ingredientes Frescos y Hielo Cristalino Purificado</h2>
+                        <p class="exp-text">
+                            Inspirados en la alquimia del pomelo rubí recién cortado y el romero fresco destilado,
+                            elaboramos nuestros propios jarabes, tónicas de autor e infusiones herbales en pequeñas
+                            tandas.
+                        </p>
+
+                        <div class="exp-features">
+                            <div class="feature-card">
+                                <div class="feature-icon"><i class="fa-solid fa-cube"></i></div>
+                                <div>
+                                    <h4>Hielo Cristal de Lenta Fusión</h4>
+                                    <p>Cubos de ultra purificación que no diluyen tu cóctel, manteniendo el equilibrio
+                                        del sabor perfecto.</p>
+                                </div>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon"><i class="fa-solid fa-leaf"></i></div>
+                                <div>
+                                    <h4>Romero & Cítricos Orgánicos</h4>
+                                    <p>Hierbas aromáticas cultivadas localmente y tratadas al momento para liberar sus
+                                        aceites esenciales.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bar Experience & Testimonials Section -->
+        <section class="about-section" id="nosotros">
+            <div class="section-container">
+                <div class="about-card-glass">
+                    <div class="about-header">
+                        <i class="fa-solid fa-quote-left quote-icon"></i>
+                        <h3>"La mejor experiencia en coctelería de autor de la ciudad. El Ruby Rosemary Spritz es
+                            sencillamente sublime."</h3>
+                        <p class="author-tag">— Revista Mixology & Flavors 2026</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-col brand-col">
+                <div class="brand-logo">
+                    <span class="logo-icon"><i class="fa-solid fa-glass-citrus"></i></span>
+                    <div class="logo-text">
+                        <span class="brand-name">LUMEN</span>
+                        <span class="brand-tag">ARTISANAL MIXOLOGY</span>
+                    </div>
+                </div>
+                <p class="footer-desc">
+                    Experiencias sensoriales a través de la coctelería artesanal. Ingredientes seleccionados, técnica
+                    refinada y pasión en cada copa.
+                </p>
+                <div class="social-links">
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="#" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Navegación</h4>
+                <ul>
+                    <li><a href="#hero">Inicio</a></li>
+                    <li><a href="#menu">Nuestros 10 Tragos</a></li>
+                    <li><a href="#experiencia">Secretos Botánicos</a></li>
+                    <li><a href="#nosotros">Reseñas y Barra</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Horarios de Atención</h4>
+                <ul class="hours-list">
+                    <li><span>Miércoles a Viernes:</span> 19:00 - 02:00 hs</li>
+                    <li><span>Sábados y Domingos:</span> 18:00 - 04:00 hs</li>
+                    <li><span>Lunes y Martes:</span> Cerrado por macerados</li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Contacto y Pedidos</h4>
+                <p><i class="fa-solid fa-location-dot"></i> Av. Botánica 1420, Barrio Italia</p>
+                <p><i class="fa-solid fa-phone"></i> +54 11 5555-8899</p>
+                <p><i class="fa-solid fa-envelope"></i> barra@lumencocktails.com</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-bottom-container">
+                <p>&copy; 2026 LUMEN Artisanal Mixology. Todos los derechos reservados.</p>
+                <p class="credits">Powered elavinchodev</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cocktail Detail Modal -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal-card">
+            <button class="modal-close" id="modalCloseBtn" aria-label="Cerrar modal">&times;</button>
+            <div class="modal-body" id="modalBody">
+                <!-- Injected via script.js -->
+            </div>
+        </div>
+    </div>
+
+    <!-- SIMULATED ORDER PROCESS MODAL (Exigido por la consigna) -->
+    <div class="modal-overlay order-modal-overlay" id="orderProcessModal">
+        <div class="modal-card order-modal-card">
+            <button class="modal-close" id="orderModalCloseBtn" aria-label="Cerrar modal">&times;</button>
+            <div class="order-status-container">
+                <div class="order-status-icon">
+                    <div class="pulse-ring"></div>
+                    <i class="fa-solid fa-martini-glass-citrus icon-shaker"></i>
+                </div>
+
+                <div class="order-badge">
+                    <span class="badge-dot-live"></span> En Vivo • Barra Principal
+                </div>
+
+                <h3 class="order-title">¡Su pedido está en proceso!</h3>
+                <p class="order-subtitle" id="orderDrinkName">Preparando tu cóctel seleccionado...</p>
+
+                <!-- Order Progress Tracker -->
+                <div class="order-progress-wrapper">
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" id="orderProgressBar"></div>
+                    </div>
+                    <div class="progress-steps">
+                        <div class="step active" id="step1">
+                            <div class="step-circle"><i class="fa-solid fa-check"></i></div>
+                            <span class="step-label">Recibido</span>
+                        </div>
+                        <div class="step active" id="step2">
+                            <div class="step-circle"><i class="fa-solid fa-fire"></i></div>
+                            <span class="step-label">Mezclando</span>
+                        </div>
+                        <div class="step" id="step3">
+                            <div class="step-circle"><i class="fa-solid fa-whiskey-glass"></i></div>
+                            <span class="step-label">Listo / Servido</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="order-details-box">
+                    <div class="detail-row">
+                        <span><i class="fa-solid fa-clock"></i> Tiempo estimado:</span>
+                        <strong id="orderCountdown">04:30 min</strong>
+                    </div>
+                    <div class="detail-row">
+                        <span><i class="fa-solid fa-receipt"></i> Número de Pedido:</span>
+                        <strong id="orderNumber">#LUMEN-8842</strong>
+                    </div>
+                    <div class="detail-row">
+                        <span><i class="fa-solid fa-tag"></i> Ingredientes Clave:</span>
+                        <span id="orderIngredientsSummary" class="ingredients-summary">Hielo cristal, Cítricos
+                            frescos</span>
+                    </div>
+                </div>
+
+                <div class="order-modal-actions">
+                    <button class="btn btn-primary btn-block" id="confirmOrderSuccessBtn">
+                        <i class="fa-solid fa-thumbs-up"></i> Entendido, esperaré en la barra / mesa
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Toast Notifications Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Script File -->
+    <script src="script.js"></script>
+</body>
+
+</html>

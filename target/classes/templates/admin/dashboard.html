@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout :: head('LUMEN | Admin Dashboard')}">
+</head>
+
+<body>
+    <!-- Ambient Glass Lighting & Sparkle Effects -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="bubbles-container" id="bubblesContainer"></div>
+
+    <!-- Header Section -->
+    <header th:replace="~{fragments/layout :: header}"></header>
+
+    <!-- Admin Section -->
+    <main class="admin-section">
+        <div class="admin-container">
+            <!-- Left Navigation Sidebar Fragment -->
+            <div th:replace="~{fragments/layout :: adminSidebar('dashboard')}"></div>
+
+            <!-- Right Dashboard Content -->
+            <div class="admin-content">
+                <div class="admin-header-title">
+                    <h2 class="section-title" style="margin: 0;"><i class="fa-solid fa-gauge text-gradient"></i> Panel de Control</h2>
+                    <span style="color: var(--text-muted);">Administración General</span>
+                </div>
+
+                <!-- Stats Counters Grid -->
+                <div class="admin-stats-grid">
+                    <!-- Drinks Stat -->
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fa-solid fa-martini-glass-citrus"></i></div>
+                        <div class="stat-info">
+                            <h5>Cocteles</h5>
+                            <h2 th:text="${tragosCount}">0</h2>
+                        </div>
+                    </div>
+                    
+                    <!-- Orders Stat -->
+                    <div class="stat-card">
+                        <div class="stat-icon pink"><i class="fa-solid fa-receipt"></i></div>
+                        <div class="stat-info">
+                            <h5>Pedidos</h5>
+                            <h2 th:text="${pedidosCount}">0</h2>
+                        </div>
+                    </div>
+                    
+                    <!-- Users Stat -->
+                    <div class="stat-card">
+                        <div class="stat-icon green"><i class="fa-solid fa-users"></i></div>
+                        <div class="stat-info">
+                            <h5>Usuarios</h5>
+                            <h2 th:text="${usuariosCount}">0</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Orders Section -->
+                <div style="margin-top: 2rem;">
+                    <h3 style="font-size: 1.3rem; font-family: var(--font-heading); font-weight: 700; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Pedidos Recientes</span>
+                        <a href="/admin/pedidos" class="btn btn-outline btn-sm" style="font-size: 0.8rem;"><i class="fa-solid fa-eye"></i> Ver Todos</a>
+                    </h3>
+
+                    <div class="admin-table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Pedido</th>
+                                    <th>Fecha</th>
+                                    <th>Cliente</th>
+                                    <th>Total</th>
+                                    <th>Estado</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="pedido : ${pedidosRecientes}">
+                                    <td th:text="${pedido.numeroPedido}">#LUMEN-1234</td>
+                                    <td th:text="${#temporals.format(pedido.fecha, 'dd/MM/yyyy HH:mm')}">24/08/2026 22:00</td>
+                                    <td th:text="${pedido.usuario.nombre}">Cliente Name</td>
+                                    <td th:text="${'$' + #numbers.formatDecimal(pedido.total, 1, 2)}" style="color: var(--citrus-gold); font-weight: bold;">$0.00</td>
+                                    <td>
+                                        <span class="badge-status" 
+                                              th:classappend="${pedido.estado == 'RECIBIDO' ? 'badge-received' : (pedido.estado == 'MEZCLANDO' ? 'badge-mixing' : 'badge-ready')}"
+                                              th:text="${pedido.estado}">
+                                            RECIBIDO
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{/pedido/estado/{num}(num=${pedido.numeroPedido})}" class="btn btn-outline btn-sm" style="font-size: 0.75rem;">
+                                            <i class="fa-solid fa-magnifying-glass"></i> Tracking
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(pedidosRecientes)}">
+                                    <td colspan="6" style="text-align: center; color: var(--text-secondary); padding: 2rem;">
+                                        No hay pedidos registrados en el sistema.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
+
+    <script src="/js/script.js"></script>
+</body>
+
+</html>

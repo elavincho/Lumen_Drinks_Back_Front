@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout :: head('LUMEN | Estado de Pedido')}">
+</head>
+
+<body>
+    <!-- Ambient Glass Lighting & Sparkle Effects -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="bubbles-container" id="bubblesContainer"></div>
+
+    <!-- Header Section -->
+    <header th:replace="~{fragments/layout :: header}"></header>
+
+    <!-- Main Order Tracker Section -->
+    <main class="tracker-section">
+        <div class="auth-card" style="max-width: 600px; width: 100%; text-align: center;">
+            <div class="order-status-container" style="padding: 1rem 0;">
+                <div class="order-status-icon" style="margin-bottom: 2rem;">
+                    <!-- Shaker Icon animations dynamically based on status -->
+                    <div class="pulse-ring" th:if="${pedido.estado != 'LISTO'}"></div>
+                    <i class="fa-solid fa-martini-glass-citrus icon-shaker" 
+                       th:classappend="${pedido.estado == 'MEZCLANDO' ? 'fa-spin' : ''}"
+                       style="font-size: 3.5rem; color: var(--citrus-gold);"></i>
+                </div>
+
+                <div class="order-badge" style="margin-bottom: 1.5rem;">
+                    <span class="badge-dot-live"></span> En Vivo • Barra Principal
+                </div>
+
+                <!-- Dynamic Status Title -->
+                <h3 class="order-title" style="font-size: 2rem; margin-bottom: 0.5rem; font-family: var(--font-heading); font-weight: 800;"
+                    th:text="${pedido.estado == 'RECIBIDO' ? '¡Pedido Recibido!' : 
+                              (pedido.estado == 'MEZCLANDO' ? '¡Mezclando tu Cóctel!' : '¡Cóctel Listo!')}">
+                    ¡Su pedido está en proceso!
+                </h3>
+                <p class="order-subtitle" style="color: var(--text-secondary); margin-bottom: 2.5rem;"
+                   th:text="${pedido.estado == 'RECIBIDO' ? 'Tu orden fue enviada a la barra principal. Esperando al bartender...' : 
+                             (pedido.estado == 'MEZCLANDO' ? 'El bartender está combinando los ingredientes botánicos...' : '¡Tu trago está servido! Retíralo en la barra principal.')}">
+                    Preparando tu cóctel seleccionado...
+                </p>
+
+                <!-- Order Progress Tracker -->
+                <div class="order-progress-wrapper" style="margin-bottom: 3rem;">
+                    <div class="progress-bar-bg" style="height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; position: relative; margin-bottom: 1.5rem; overflow: hidden;">
+                        <!-- Width depends on current status -->
+                        <div class="progress-bar-fill" 
+                             th:style="${pedido.estado == 'RECIBIDO' ? 'width: 15%;' : (pedido.estado == 'MEZCLANDO' ? 'width: 65%;' : 'width: 100%;')}"
+                             style="height: 100%; background: linear-gradient(90deg, var(--citrus-gold), var(--ruby-pink)); transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);"></div>
+                    </div>
+                    
+                    <!-- Step bubbles -->
+                    <div class="progress-steps" style="display: flex; justify-content: space-between; position: relative;">
+                        <!-- Step 1: Recibido (Always Active) -->
+                        <div class="step active" style="text-align: center; flex: 1;">
+                            <div class="step-circle" style="width: 36px; height: 36px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 0.5rem auto; font-size: 0.9rem; background: var(--citrus-gold); border: 2px solid var(--citrus-gold); color: #000; box-shadow: 0 0 10px rgba(255, 184, 76, 0.4);">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <span class="step-label" style="font-size: 0.8rem; font-weight: 600; color: var(--text-primary);">Recibido</span>
+                        </div>
+                        
+                        <!-- Step 2: Mezclando (Active if MEZCLANDO or LISTO) -->
+                        <div class="step" th:classappend="${pedido.estado == 'MEZCLANDO' || pedido.estado == 'LISTO' ? 'active' : ''}" style="text-align: center; flex: 1;">
+                            <div class="step-circle" 
+                                 th:style="${pedido.estado == 'MEZCLANDO' || pedido.estado == 'LISTO' ? 'background: var(--ruby-pink); border-color: var(--ruby-pink); color: #fff; box-shadow: 0 0 10px rgba(255, 77, 109, 0.4);' : 'background: #000; border-color: var(--border-glass); color: var(--text-muted);'}"
+                                 style="width: 36px; height: 36px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 0.5rem auto; font-size: 0.9rem; border: 2px solid; transition: all 0.3s ease;">
+                                <i class="fa-solid fa-fire"></i>
+                            </div>
+                            <span class="step-label" 
+                                  th:style="${pedido.estado == 'MEZCLANDO' || pedido.estado == 'LISTO' ? 'color: var(--text-primary);' : 'color: var(--text-muted);'}"
+                                  style="font-size: 0.8rem; font-weight: 600;">Mezclando</span>
+                        </div>
+                        
+                        <!-- Step 3: Listo (Active only if LISTO) -->
+                        <div class="step" th:classappend="${pedido.estado == 'LISTO' ? 'active' : ''}" style="text-align: center; flex: 1;">
+                            <div class="step-circle" 
+                                 th:style="${pedido.estado == 'LISTO' ? 'background: #2ecc71; border-color: #2ecc71; color: #fff; box-shadow: 0 0 10px rgba(46, 204, 113, 0.4);' : 'background: #000; border-color: var(--border-glass); color: var(--text-muted);'}"
+                                 style="width: 36px; height: 36px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 0.5rem auto; font-size: 0.9rem; border: 2px solid; transition: all 0.3s ease;">
+                                <i class="fa-solid fa-whiskey-glass"></i>
+                            </div>
+                            <span class="step-label" 
+                                  th:style="${pedido.estado == 'LISTO' ? 'color: var(--text-primary);' : 'color: var(--text-muted);'}"
+                                  style="font-size: 0.8rem; font-weight: 600;">Listo / Servido</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Details Box -->
+                <div class="order-details-box" style="background: rgba(0,0,0,0.3); border: var(--glass-border); border-radius: var(--radius-md); padding: 1.5rem; text-align: left; margin-bottom: 2.5rem;">
+                    <div class="detail-row" style="display: flex; justify-content: space-between; border-bottom: var(--glass-border); padding-bottom: 0.8rem; margin-bottom: 0.8rem;">
+                        <span style="color: var(--text-secondary);"><i class="fa-solid fa-clock"></i> Tiempo estimado:</span>
+                        <strong th:text="${pedido.tiempoEstimado}" style="color: var(--citrus-gold);">04:30 min</strong>
+                    </div>
+                    <div class="detail-row" style="display: flex; justify-content: space-between; border-bottom: var(--glass-border); padding-bottom: 0.8rem; margin-bottom: 0.8rem;">
+                        <span style="color: var(--text-secondary);"><i class="fa-solid fa-receipt"></i> Número de Pedido:</span>
+                        <strong th:text="${pedido.numeroPedido}">#LUMEN-8842</strong>
+                    </div>
+                    <div class="detail-row" style="display: flex; justify-content: space-between; border-bottom: var(--glass-border); padding-bottom: 0.8rem; margin-bottom: 0.8rem;">
+                        <span style="color: var(--text-secondary);"><i class="fa-solid fa-glass-martini"></i> Tragos:</span>
+                        <span style="text-align: right; font-weight: 600;">
+                            <span th:each="item, iter : ${pedido.items}" 
+                                  th:text="${item.nombreTrago + ' (x' + item.cantidad + ')' + (!iter.last ? ', ' : '')}">
+                                Spritz (x1)
+                            </span>
+                        </span>
+                    </div>
+                    <div class="detail-row" style="display: flex; justify-content: space-between;">
+                        <span style="color: var(--text-secondary);"><i class="fa-solid fa-dollar-sign"></i> Total Facturado:</span>
+                        <strong th:text="${'$' + #numbers.formatDecimal(pedido.total, 1, 2)}" style="color: var(--ruby-pink); font-size: 1.1rem;">$12.50</strong>
+                    </div>
+                </div>
+
+                <!-- Back button to home -->
+                <div class="order-modal-actions">
+                    <a href="/" class="btn btn-primary btn-block btn-lg">
+                        <i class="fa-solid fa-thumbs-up"></i> Entendido, esperar en la barra / mesa
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
+
+    <script src="/js/script.js"></script>
+    
+    <!-- Script to Auto-Refresh the page every 5 seconds to load order status updates from database -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        const estadoActual = /*[[${pedido.estado}]]*/ 'RECIBIDO';
+        if (estadoActual !== 'LISTO') {
+            setTimeout(() => {
+                window.location.reload();
+            }, 5000);
+        }
+        /*]]>*/
+    </script>
+</body>
+
+</html>

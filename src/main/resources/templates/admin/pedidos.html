@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout :: head('LUMEN | Gestión de Pedidos')}">
+</head>
+
+<body>
+    <!-- Ambient Glass Lighting & Sparkle Effects -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="bubbles-container" id="bubblesContainer"></div>
+
+    <!-- Header Section -->
+    <header th:replace="~{fragments/layout :: header}"></header>
+
+    <!-- Admin Section -->
+    <main class="admin-section">
+        <div class="admin-container">
+            <!-- Left Navigation Sidebar Fragment -->
+            <div th:replace="~{fragments/layout :: adminSidebar('pedidos')}"></div>
+
+            <!-- Right Content Panel -->
+            <div class="admin-content">
+                <div class="admin-header-title">
+                    <h2 class="section-title" style="margin: 0;"><i class="fa-solid fa-receipt text-gradient"></i> Gestión de Pedidos</h2>
+                    <span style="color: var(--text-muted);" th:text="${#lists.size(pedidos) + ' pedidos totales'}">0 pedidos</span>
+                </div>
+
+                <!-- Alert Messages -->
+                <div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}">
+                    Operación exitosa.
+                </div>
+
+                <div class="admin-table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Pedido</th>
+                                <th>Fecha</th>
+                                <th>Cliente</th>
+                                <th>Items / Detalle</th>
+                                <th>Total</th>
+                                <th>Estado</th>
+                                <th>Actualizar Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="pedido : ${pedidos}">
+                                <td>
+                                    <a th:href="@{/pedido/estado/{num}(num=${pedido.numeroPedido})}" 
+                                       th:text="${pedido.numeroPedido}" 
+                                       style="color: var(--citrus-gold); font-weight: bold; text-decoration: none; border-bottom: 1px dashed var(--citrus-gold);">
+                                        #LUMEN-1234
+                                    </a>
+                                </td>
+                                <td th:text="${#temporals.format(pedido.fecha, 'dd/MM/yyyy HH:mm')}">24/08/2026 22:00</td>
+                                <td>
+                                    <span th:text="${pedido.usuario.nombre}">Cliente Name</span><br/>
+                                    <small th:text="${pedido.usuario.email}" style="color: var(--text-muted); font-size: 0.75rem;">cliente@email.com</small>
+                                </td>
+                                <td>
+                                    <div style="font-size: 0.85rem;">
+                                        <div th:each="item : ${pedido.items}">
+                                            • <span th:text="${item.nombreTrago}">Spritz</span> 
+                                            <span style="color: var(--text-muted);" th:text="${'x' + item.cantidad}">x1</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td th:text="${'$' + #numbers.formatDecimal(pedido.total, 1, 2)}" style="color: var(--ruby-pink); font-weight: bold;">$0.00</td>
+                                <td>
+                                    <span class="badge-status" 
+                                          th:classappend="${pedido.estado == 'RECIBIDO' ? 'badge-received' : (pedido.estado == 'MEZCLANDO' ? 'badge-mixing' : 'badge-ready')}"
+                                          th:text="${pedido.estado}">
+                                        RECIBIDO
+                                    </span>
+                                </td>
+                                <td>
+                                    <!-- Form to update order status inline -->
+                                    <form th:action="@{/admin/pedidos/actualizar-estado}" method="POST" style="display: flex; gap: 8px; align-items: center;">
+                                        <input type="hidden" name="id" th:value="${pedido.id}" />
+                                        <select name="nuevoEstado" class="form-input" 
+                                                style="padding: 0.4rem 0.6rem; font-size: 0.8rem; background: rgba(0,0,0,0.6); color: white; border-radius: 4px; width: auto; font-family: var(--font-body); border-color: rgba(255,255,255,0.15);">
+                                            <option value="RECIBIDO" th:selected="${pedido.estado == 'RECIBIDO'}">RECIBIDO</option>
+                                            <option value="MEZCLANDO" th:selected="${pedido.estado == 'MEZCLANDO'}">MEZCLANDO</option>
+                                            <option value="LISTO" th:selected="${pedido.estado == 'LISTO'}">LISTO / SERVIDO</option>
+                                        </select>
+                                        <button type="submit" class="btn btn-primary" style="padding: 0.4rem 0.7rem; font-size: 0.8rem;">
+                                            <i class="fa-solid fa-arrow-rotate-right"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(pedidos)}">
+                                <td colspan="7" style="text-align: center; color: var(--text-secondary); padding: 3rem;">
+                                    No hay pedidos registrados en el sistema.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
+
+    <script src="/js/script.js"></script>
+</body>
+
+</html>

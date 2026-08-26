@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout :: head('LUMEN | Gestión de Tragos')}">
+</head>
+
+<body>
+    <!-- Ambient Glass Lighting & Sparkle Effects -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="bubbles-container" id="bubblesContainer"></div>
+
+    <!-- Header Section -->
+    <header th:replace="~{fragments/layout :: header}"></header>
+
+    <!-- Admin Section -->
+    <main class="admin-section">
+        <div class="admin-container">
+            <!-- Left Navigation Sidebar Fragment -->
+            <div th:replace="~{fragments/layout :: adminSidebar('tragos')}"></div>
+
+            <!-- Right Content Panel -->
+            <div class="admin-content">
+                <div class="admin-header-title">
+                    <h2 class="section-title" style="margin: 0;"><i class="fa-solid fa-martini-glass-citrus text-gradient"></i> Carta de Tragos</h2>
+                    <a href="/admin/tragos/nuevo" class="btn btn-primary">
+                        <i class="fa-solid fa-plus"></i> Agregar Trago
+                    </a>
+                </div>
+
+                <!-- Alert Messages -->
+                <div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}">
+                    Operación exitosa.
+                </div>
+                <div th:if="${error}" class="alert alert-danger" th:text="${error}">
+                    Hubo un problema.
+                </div>
+
+                <div class="admin-table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Imagen</th>
+                                <th>Nombre</th>
+                                <th>Categoría</th>
+                                <th>Precio</th>
+                                <th>Badge / Distintivo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="trago : ${tragos}">
+                                <td>
+                                    <img th:src="${trago.imagenUrl}" th:alt="${trago.nombre}" class="table-img" onerror="this.src='/images/ruby_spritz.png'">
+                                </td>
+                                <td>
+                                    <strong th:text="${trago.nombre}">Ruby Spritz</strong>
+                                </td>
+                                <td>
+                                    <span th:text="${trago.categoria == 'insignia' ? 'Insignia LUMEN' : 
+                                                    (trago.categoria == 'citricos' ? 'Cítrico & Frutal' : 
+                                                    (trago.categoria == 'ahumados' ? 'Ahumado & Especiado' : 'Sin Alcohol'))}" 
+                                          style="font-size: 0.85rem; color: var(--text-secondary);">
+                                        Categoría
+                                    </span>
+                                </td>
+                                <td th:text="${'$' + #numbers.formatDecimal(trago.precio, 1, 2)}" style="color: var(--citrus-gold); font-weight: bold;">$12.50</td>
+                                <td th:text="${trago.badge != null and !trago.badge.isEmpty() ? trago.badge : '-'}" style="color: var(--text-muted); font-size: 0.9rem;">Badge</td>
+                                <td>
+                                    <div class="actions-cell">
+                                        <!-- Edit button -->
+                                        <a th:href="@{/admin/tragos/editar/{id}(id=${trago.id})}" class="btn btn-outline btn-sm" style="padding: 0.4rem 0.7rem; font-size: 0.8rem;">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </a>
+                                        <!-- Delete button with confirmation -->
+                                        <a th:href="@{/admin/tragos/eliminar/{id}(id=${trago.id})}" class="btn btn-outline btn-sm" 
+                                           style="padding: 0.4rem 0.7rem; font-size: 0.8rem; color: var(--ruby-pink); border-color: rgba(255, 77, 109, 0.3);"
+                                           onclick="return confirm('¿Estás completamente seguro de que deseas eliminar este trago de la carta? Esta acción borrará el archivo de imagen correspondiente del servidor.');">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(tragos)}">
+                                <td colspan="6" style="text-align: center; color: var(--text-secondary); padding: 3rem;">
+                                    No hay tragos registrados. Haz clic en "Agregar Trago" para crear el primero.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
+
+    <script src="/js/script.js"></script>
+</body>
+
+</html>
