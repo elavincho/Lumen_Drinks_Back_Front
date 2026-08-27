@@ -1,0 +1,25 @@
+<img src="https://i.ibb.co/k2WdqNv4/lumen.png" width="80" height="80" alt="img"/>
+
+# Lumen Drinks
+
+En este proyecto realicé una página web de tragos llamada Lumen Drinks, utilizando Google AI Studio. La cual simuma un app para pedir tragos con un carrito de compras, cuenta con una carta y tragos de autor.
+
+## Tecnologías utilizadas
+
+- **Frontend**:
+  - HTML
+  - CSS
+  - JavaScript
+  - Google AI Studio
+
+- **Deploy**:
+  - Netlify
+
+## Link del Proyecto
+- https://lumendrinks.netlify.app/
+  
+## Imágenes del proyecto
+
+<img src="https://i.ibb.co/k2WdqNv4/lumen.png" alt="lumen" border="0">
+<img src="https://github.com/elavincho/Lumen_Drinks/blob/master/images/berry_fizz.png" alt="lumen" border="0">
+<img src="https://github.com/elavincho/Lumen_Drinks/blob/master/images/ruby_spritz.png" alt="lumen" border="0">
