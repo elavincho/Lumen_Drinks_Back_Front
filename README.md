@@ -11,6 +11,12 @@ En este proyecto realicé una página web de tragos llamada Lumen Drinks, utiliz
   - CSS
   - JavaScript
   - Google AI Studio
+ 
+- **Backend**:
+  - Java 17
+  - Spring Boot
+  - Thymeleaf
+  - H2 Database
 
 - **Deploy**:
   - Netlify
