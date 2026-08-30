@@ -2,7 +2,7 @@
 
 # Lumen Drinks
 
-En este proyecto realicé una página web de tragos llamada Lumen Drinks, utilizando Google AI Studio. La cual simuma un app para pedir tragos con un carrito de compras, cuenta con una carta y tragos de autor.
+En este proyecto realicé una página app web de tragos llamada Lumen Drinks, utilizando Google AI Studio. La cual simuma un app para pedir tragos con un carrito de compras, cuenta con una carta y tragos de autor.
 
 ## Tecnologías utilizadas
 
