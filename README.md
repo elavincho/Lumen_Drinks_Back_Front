@@ -4,6 +4,8 @@
 
 En este proyecto realicé una página app web de tragos llamada Lumen Drinks, utilizando Google AI Studio. La cual simuma un app para pedir tragos con un carrito de compras, cuenta con una carta y tragos de autor.
 
+Cuando el cliente hace un pedido, esta se refleja en el dashboard del administrador y comienza la etapa de la preparación, y entrega.
+
 ## Tecnologías utilizadas
 
 - **Frontend**:
